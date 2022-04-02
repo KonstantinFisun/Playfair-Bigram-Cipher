@@ -191,6 +191,7 @@ def main():
         language = int(input("1. Русский \n2. Английский \n"))
         if language == 1:
             matrix_rus = matrix_russian()
+            print(matrix_rus)
             while True:
                 choice = int(input("\n1.Шифрование \n2.Расшифровка \n3.Выход \n"))
                 if choice == 1:
