@@ -35,13 +35,13 @@ def encrypt_english(my_matrix):
         loc_second = locindex(msg[i + 1], my_matrix)  # позиция второй буквы
         if loc_first[1] == loc_second[1]:  # Если столбцы совпадают, заменяем на находящиеся под ними
             print("{}{}".format(my_matrix[(loc_first[0] + 1) % 5][loc_first[1]],
-                                my_matrix[(loc_second[0] + 1) % 5][loc_second[1]]), end=' ')
+                                my_matrix[(loc_second[0] + 1) % 5][loc_second[1]]), end='')
         elif loc_first[0] == loc_second[0]:  # Если столбцы совпадают, заменяем на находящиеся справа от них
             print("{}{}".format(my_matrix[loc_first[0]][(loc_first[1] + 1) % 5],
-                                my_matrix[loc_second[0]][(loc_second[1] + 1) % 5]), end=' ')
+                                my_matrix[loc_second[0]][(loc_second[1] + 1) % 5]), end='')
         else:  # заменяются на символы, находящиеся в тех же строках, но соответствующие другим углам
             print("{}{}".format(my_matrix[loc_first[0]][loc_second[1]],
-                                my_matrix[loc_second[0]][loc_first[1]]), end=' ')
+                                my_matrix[loc_second[0]][loc_first[1]]), end='')
         i = i + 2  # Рассматривается след пара
 
 
@@ -55,13 +55,13 @@ def decrypt_english(my_matrix):  # Расшифровка латиницы
         loc_second = locindex(msg[i + 1], my_matrix)  # позиция второй буквы
         if loc_first[1] == loc_second[1]:  # Если столбцы совпадают, заменяем на находящиеся сверху
             print("{}{}".format(my_matrix[(loc_first[0] - 1) % 5][loc_first[1]],
-                                my_matrix[(loc_second[0] - 1) % 5][loc_second[1]]), end=' ')
+                                my_matrix[(loc_second[0] - 1) % 5][loc_second[1]]), end='')
         elif loc_first[0] == loc_second[0]:  # Если столбцы совпадают, заменяем на находящиеся слева от них
             print("{}{}".format(my_matrix[loc_first[0]][(loc_first[1] - 1) % 5],
-                                my_matrix[loc_second[0]][(loc_second[1] - 1) % 5]), end=' ')
+                                my_matrix[loc_second[0]][(loc_second[1] - 1) % 5]), end='')
         else:  # заменяются на символы, находящиеся в тех же строках, но соответствующие другим углам
             print("{}{}".format(my_matrix[loc_first[0]][loc_second[1]],
-                                my_matrix[loc_second[0]][loc_first[1]]), end=' ')
+                                my_matrix[loc_second[0]][loc_first[1]]), end='')
         i = i + 2  # Рассматривается след пара
 
 
