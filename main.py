@@ -1,3 +1,6 @@
+import PySimpleGUI as sg
+
+
 def matrix(x, y, initial):  # Заполнение матрицы
     return [[initial for i in range(x)] for j in range(y)]
 
@@ -15,8 +18,10 @@ def locindex(c, my_matrix):  # Позиция буквы
 
 
 # Шифрование на латиницу
-def encrypt_english(my_matrix):
-    msg = str(input("Введите сообщение, которое хотите зашифровать : ")).upper().replace(" ", "")
+def encrypt_english(my_matrix, text):
+    msg = text.upper().replace(" ", "")
+
+    out = ''
 
     # Добавляем 'X' между одинаковыми буквами
     for s in range(0, len(msg) + 1, 2):  # Шаг 2
@@ -29,45 +34,49 @@ def encrypt_english(my_matrix):
         msg = msg[:] + 'X'
 
     i = 0
-    print("Зашифрованное сообщение : ", end=' ')
     while i < len(msg):
         loc_first = locindex(msg[i], my_matrix)  # позиция первой буквы
         loc_second = locindex(msg[i + 1], my_matrix)  # позиция второй буквы
         if loc_first[1] == loc_second[1]:  # Если столбцы совпадают, заменяем на находящиеся под ними
-            print("{}{}".format(my_matrix[(loc_first[0] + 1) % 5][loc_first[1]],
-                                my_matrix[(loc_second[0] + 1) % 5][loc_second[1]]), end='')
+            out += "{}{}".format(my_matrix[(loc_first[0] + 1) % 5][loc_first[1]],
+                                my_matrix[(loc_second[0] + 1) % 5][loc_second[1]])
         elif loc_first[0] == loc_second[0]:  # Если столбцы совпадают, заменяем на находящиеся справа от них
-            print("{}{}".format(my_matrix[loc_first[0]][(loc_first[1] + 1) % 5],
-                                my_matrix[loc_second[0]][(loc_second[1] + 1) % 5]), end='')
+            out += "{}{}".format(my_matrix[loc_first[0]][(loc_first[1] + 1) % 5],
+                                my_matrix[loc_second[0]][(loc_second[1] + 1) % 5])
         else:  # заменяются на символы, находящиеся в тех же строках, но соответствующие другим углам
-            print("{}{}".format(my_matrix[loc_first[0]][loc_second[1]],
-                                my_matrix[loc_second[0]][loc_first[1]]), end='')
+            out += "{}{}".format(my_matrix[loc_first[0]][loc_second[1]],
+                                my_matrix[loc_second[0]][loc_first[1]])
         i = i + 2  # Рассматривается след пара
 
+    return out
 
-def decrypt_english(my_matrix):  # Расшифровка латиницы
-    msg = str(input("Введите зашифрованный текст : ")).upper().replace(" ", "")
 
-    print("Исходный текст : ", end=' ')
+def decrypt_english(my_matrix, text):  # Расшифровка латиницы
+    msg = text.upper().replace(" ", "")
+
+    out = ''
+
     i = 0
     while i < len(msg):
         loc_first = locindex(msg[i], my_matrix)  # позиция первой буквы
         loc_second = locindex(msg[i + 1], my_matrix)  # позиция второй буквы
         if loc_first[1] == loc_second[1]:  # Если столбцы совпадают, заменяем на находящиеся сверху
-            print("{}{}".format(my_matrix[(loc_first[0] - 1) % 5][loc_first[1]],
-                                my_matrix[(loc_second[0] - 1) % 5][loc_second[1]]), end='')
+            out += "{}{}".format(my_matrix[(loc_first[0] - 1) % 5][loc_first[1]],
+                                my_matrix[(loc_second[0] - 1) % 5][loc_second[1]])
         elif loc_first[0] == loc_second[0]:  # Если столбцы совпадают, заменяем на находящиеся слева от них
-            print("{}{}".format(my_matrix[loc_first[0]][(loc_first[1] - 1) % 5],
-                                my_matrix[loc_second[0]][(loc_second[1] - 1) % 5]), end='')
+            out += "{}{}".format(my_matrix[loc_first[0]][(loc_first[1] - 1) % 5],
+                                my_matrix[loc_second[0]][(loc_second[1] - 1) % 5])
         else:  # заменяются на символы, находящиеся в тех же строках, но соответствующие другим углам
-            print("{}{}".format(my_matrix[loc_first[0]][loc_second[1]],
-                                my_matrix[loc_second[0]][loc_first[1]]), end='')
+            out += "{}{}".format(my_matrix[loc_first[0]][loc_second[1]],
+                                my_matrix[loc_second[0]][loc_first[1]])
         i = i + 2  # Рассматривается след пара
+
+    return out
 
 
 # Шифрование на кириллицу
-def encrypt_russian(my_matrix):
-    msg = str(input("Введите сообщение, которое хотите зашифровать : ")).upper().replace(" ", "")
+def encrypt_russian(my_matrix, text):
+    msg = text.upper().replace(" ", "")
 
     # Добавляем 'Ь' между одинаковыми буквами
     for s in range(0, len(msg) + 1, 2):  # Шаг 2
@@ -79,46 +88,50 @@ def encrypt_russian(my_matrix):
     if len(msg) % 2 != 0:
         msg = msg[:] + 'Ь'
 
+    out = ''
+
     i = 0
-    print("Зашифрованное сообщение : ", end=' ')
     while i < len(msg):
         loc_first = locindex(msg[i], my_matrix)  # позиция первой буквы
         loc_second = locindex(msg[i + 1], my_matrix)  # позиция второй буквы
         if loc_first[1] == loc_second[1]:  # Если столбцы совпадают, заменяем на находящиеся под ними
-            print("{}{}".format(my_matrix[(loc_first[0] + 1) % 8][loc_first[1]],
-                                my_matrix[(loc_second[0] + 1) % 8][loc_second[1]]), end=' ')
+            out += "{}{}".format(my_matrix[(loc_first[0] + 1) % 8][loc_first[1]],
+                                my_matrix[(loc_second[0] + 1) % 8][loc_second[1]])
         elif loc_first[0] == loc_second[0]:  # Если столбцы совпадают, заменяем на находящиеся справа от них
-            print("{}{}".format(my_matrix[loc_first[0]][(loc_first[1] + 1) % 4],
-                                my_matrix[loc_second[0]][(loc_second[1] + 1) % 4]), end=' ')
+            out += "{}{}".format(my_matrix[loc_first[0]][(loc_first[1] + 1) % 4],
+                                my_matrix[loc_second[0]][(loc_second[1] + 1) % 4])
         else:  # заменяются на символы, находящиеся в тех же строках, но соответствующие другим углам
-            print("{}{}".format(my_matrix[loc_first[0]][loc_second[1]],
-                                my_matrix[loc_second[0]][loc_first[1]]), end=' ')
+            out += "{}{}".format(my_matrix[loc_first[0]][loc_second[1]],
+                                my_matrix[loc_second[0]][loc_first[1]])
         i = i + 2  # Рассматривается след пара
 
+    return out
 
-def decrypt_russian(my_matrix):  # Расшифровка на кириллицу
-    msg = str(input("Введите зашифрованный текст : ")).upper().replace(" ", "")
 
-    print("Исходный текст : ", end=' ')
+def decrypt_russian(my_matrix, text):  # Расшифровка на кириллицу
+    msg = text.upper().replace(" ", "")
+
+    out = ''
     i = 0
     while i < len(msg):
         loc_first = locindex(msg[i], my_matrix)  # позиция первой буквы
         loc_second = locindex(msg[i + 1], my_matrix)  # позиция второй буквы
         if loc_first[1] == loc_second[1]:  # Если столбцы совпадают, заменяем на находящиеся сверху
-            print("{}{}".format(my_matrix[(loc_first[0] - 1) % 8][loc_first[1]],
-                                my_matrix[(loc_second[0] - 1) % 8][loc_second[1]]), end=' ')
+            out += "{}{}".format(my_matrix[(loc_first[0] - 1) % 8][loc_first[1]],
+                                 my_matrix[(loc_second[0] - 1) % 8][loc_second[1]])
         elif loc_first[0] == loc_second[0]:  # Если столбцы совпадают, заменяем на находящиеся слева от них
-            print("{}{}".format(my_matrix[loc_first[0]][(loc_first[1] - 1) % 4],
-                                my_matrix[loc_second[0]][(loc_second[1] - 1) % 4]), end=' ')
+            out += "{}{}".format(my_matrix[loc_first[0]][(loc_first[1] - 1) % 4],
+                                 my_matrix[loc_second[0]][(loc_second[1] - 1) % 4])
         else:  # заменяются на символы, находящиеся в тех же строках, но соответствующие другим углам
-            print("{}{}".format(my_matrix[loc_first[0]][loc_second[1]],
-                                my_matrix[loc_second[0]][loc_first[1]]), end=' ')
+            out += "{}{}".format(my_matrix[loc_first[0]][loc_second[1]],
+                                 my_matrix[loc_second[0]][loc_first[1]])
         i = i + 2  # Рассматривается след пара
+    return out
 
 
-def matrix_english():
+def matrix_english(keys):
     # Убираем пробелы и в верхний регистр
-    key = input("Введите ключ : ").replace(" ", "").upper()  # Ключевое слово
+    key = keys.replace(" ", "").upper()  # Ключевое слово
 
     result = list()  # Список из букв ключевого слова
     # Заменим букву J на I (Объединим в одну ячейку), попутно создадим список из key
@@ -150,9 +163,9 @@ def matrix_english():
     return my_matrix
 
 
-def matrix_russian():
+def matrix_russian(keys):
     # Убираем пробелы и в верхний регистр
-    key = input("Введите ключ : ").replace(" ", "").upper()  # Ключевое слово
+    key = keys.replace(" ", "").upper()  # Ключевое слово
 
     result = list()  # Список из букв ключевого слова
     # Заменим букву J на I (Объединим в одну ячейку), попутно создадим список из key
@@ -187,37 +200,42 @@ def matrix_russian():
 
 
 def main():
+    layout = [
+        [sg.Text("Выберите язык:")],
+        [sg.Radio('Русский', 'RADIO1', default=True, key="-R1-"), sg.Radio('Английский', 'RADIO1')],
+        [sg.Text("Выберите операцию:")],
+        [sg.Radio('Шифровать', 'RADIO2', default=True, key="-R2-"), sg.Radio('Расшифровать', 'RADIO2')],
+        [sg.Text("Ключ:  "), sg.InputText(key = "Key")],
+        [sg.Text("Вход:  "), sg.InputText(key = "In")],
+        [sg.Text("Выход:"), sg.InputText(key = "Out")],
+        [sg.Button('Выполнить'), sg.Button('Очистить'), sg.Button('Выход')]
+    ]
+
+    window = sg.Window(title="Playfair Bigram Cipher", layout=layout, auto_size_text=True)
+
     while True:
-        language = int(input("1. Русский \n2. Английский \n"))
-        if language == 1:
-            matrix_rus = matrix_russian()
-            print(matrix_rus)
-            while True:
-                choice = int(input("\n1.Шифрование \n2.Расшифровка \n3.Выход \n"))
-                if choice == 1:
-                    encrypt_russian(matrix_rus)
-                elif choice == 2:
-                    decrypt_russian(matrix_rus)
-                elif choice == 3:
-                    exit()
+        event, values = window.read()
+        if event == "Выход" or event == sg.WIN_CLOSED:
+            break
+        if event == "Очистить":
+            window.Element('Out').update('')
+            window.Element('Key').update('')
+            window.Element('In').update('')
+        if event == "Выполнить":
+            if values['-R1-']:
+                matrix_rus = matrix_russian(str(values['Key']))
+                if values['-R2-']:
+                    window.Element('Out').update(encrypt_russian(matrix_rus, str(values['In'])))
                 else:
-                    print("Выберите корректную цифру")
-
-        elif language == 2:
-            matrix_eng = matrix_english()
-            while True:
-                choice = int(input("\n1.Шифрование \n2.Расшифровка \n3.Выход \n"))
-                if choice == 1:
-                    encrypt_english(matrix_eng)
-                elif choice == 2:
-                    decrypt_english(matrix_eng)
-                elif choice == 3:
-                    exit()
+                    window.Element('Out').update(decrypt_russian(matrix_rus, str(values['In'])))
+            else:
+                matrix_eng = matrix_english(str(values['Key']))
+                if values['-R2-']:
+                    window.Element('Out').update(encrypt_english(matrix_eng, str(values['In'])))
                 else:
-                    print("Выберите корректную цифру")
+                    window.Element('Out').update(decrypt_english(matrix_eng, str(values['In'])))
 
-        else:
-            print("Выберите корректную цифру")
+    window.close()
 
 
 if __name__ == '__main__':
