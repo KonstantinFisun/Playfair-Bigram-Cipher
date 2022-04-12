@@ -1,9 +1,7 @@
 import PySimpleGUI as sg
 
-
 def matrix(x, y, initial):  # Заполнение матрицы
     return [[initial for i in range(x)] for j in range(y)]
-
 
 def locindex(c, my_matrix):  # Позиция буквы
     loc = list()
@@ -15,7 +13,6 @@ def locindex(c, my_matrix):  # Позиция буквы
                 loc.append(i)
                 loc.append(k)
                 return loc
-
 
 # Шифрование на латиницу
 def encrypt_english(my_matrix, text):
@@ -50,7 +47,6 @@ def encrypt_english(my_matrix, text):
 
     return out
 
-
 def decrypt_english(my_matrix, text):  # Расшифровка латиницы
     msg = text.upper().replace(" ", "")
 
@@ -72,7 +68,6 @@ def decrypt_english(my_matrix, text):  # Расшифровка латиницы
         i = i + 2  # Рассматривается след пара
 
     return out
-
 
 # Шифрование на кириллицу
 def encrypt_russian(my_matrix, text):
@@ -107,7 +102,6 @@ def encrypt_russian(my_matrix, text):
 
     return out
 
-
 def decrypt_russian(my_matrix, text):  # Расшифровка на кириллицу
     msg = text.upper().replace(" ", "")
 
@@ -127,7 +121,6 @@ def decrypt_russian(my_matrix, text):  # Расшифровка на кирил�
                                  my_matrix[loc_second[0]][loc_first[1]])
         i = i + 2  # Рассматривается след пара
     return out
-
 
 def matrix_english(keys):
     # Убираем пробелы и в верхний регистр
@@ -161,7 +154,6 @@ def matrix_english(keys):
             k += 1
 
     return my_matrix
-
 
 def matrix_russian(keys):
     # Убираем пробелы и в верхний регистр
